@@ -10,7 +10,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'python -m unittest discover || echo No tests found'
+                bat 'python app.py'
             }
         }
 
