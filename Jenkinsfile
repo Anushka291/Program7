@@ -4,21 +4,30 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t calc-app .'
+                bat 'docker build -t flask-app .'
             }
         }
 
-        stage('Run Tests') {
+        stage('Run App (Manual Mode)') {
             steps {
-                bat 'docker run --rm calc-app python app.py'
+                timeout(time: 2, unit: 'MINUTES') {
+                    bat 'docker rm -f flask-container || exit 0'
+                    bat 'docker run -p 3001:3001 --name flask-container flask-app'
+                }
             }
         }
+        
+    }
 
-        stage('Run Container') {
-            steps {
-                bat 'docker rm -f calc-container || true'
-                bat 'docker run -d -p 3001:3001 --name calc-container calc-app'
-            }
+    post {
+        success {
+            echo '✅ BUILD COMPLETED'
+        }
+        failure {
+            echo '❌ BUILD FAILED'
+        }
+        always {
+            bat 'docker rm -f flask-container || exit 0'
         }
     }
 }
