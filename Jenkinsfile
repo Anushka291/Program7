@@ -25,8 +25,5 @@ pipeline {
         failure {
             echo '❌ BUILD FAILED'
         }
-        always {
-            bat 'docker rm -f flask-container || exit 0'
-        }
     }
 }
