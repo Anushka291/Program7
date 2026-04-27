@@ -10,13 +10,14 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'python app.py'
+                bat 'docker run --rm calc-app python app.py'
             }
         }
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d -p 3001:3001 calc-app'
+                bat 'docker rm -f calc-container || true'
+                bat 'docker run -d -p 3001:3001 --name calc-container calc-app'
             }
         }
     }
