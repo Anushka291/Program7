@@ -11,7 +11,7 @@ pipeline {
         stage('Run App (Manual Mode)') {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
-                    bat 'docker run -p 5001:5001 --name flask-container flask-app'
+                    bat 'docker run -p 5001:5001 --name calculator-container flask-app'
                 }
             }
         }
